@@ -18,16 +18,16 @@ class Home extends CI_Controller {
         $content['title'] = "Overview";
         $content['modules'] = "Welcome to Think.Ear";
         $content['parent'] = 'home';
-/*
-        $this->db->select('id, twitter_uid, twitter_username');
-        $this->db->order_by('twitter_username', 'asc');
-        $content['twitter_account'] = $this->db->get('twitter')->result();
+        /*
+          $this->db->select('id, twitter_uid, twitter_username');
+          $this->db->order_by('twitter_username', 'asc');
+          $content['twitter_account'] = $this->db->get('twitter')->result();
 
-        $this->db->select('id, pages_uid, pages_name');
-        $this->db->where('pages_status', 1);
-        $this->db->order_by('pages_name', 'asc');
-        $content['facebook_pages'] = $this->db->get('facebook_pages')->result();
-*/
+          $this->db->select('id, pages_uid, pages_name');
+          $this->db->where('pages_status', 1);
+          $this->db->order_by('pages_name', 'asc');
+          $content['facebook_pages'] = $this->db->get('facebook_pages')->result();
+         */
         $this->load->view('body', $content);
     }
 
