@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -9,118 +8,100 @@ class Home extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->tpl['TContent'] = null;
         $this->load->helper('url');
         $this->load->database();
     }
 
     function index() {
-        $content['title'] = "Overview";
-        $content['modules'] = "Welcome to Think.Ear";
-        $content['parent'] = 'home';
-        /*
-          $this->db->select('id, twitter_uid, twitter_username');
-          $this->db->order_by('twitter_username', 'asc');
-          $content['twitter_account'] = $this->db->get('twitter')->result();
-
-          $this->db->select('id, pages_uid, pages_name');
-          $this->db->where('pages_status', 1);
-          $this->db->order_by('pages_name', 'asc');
-          $content['facebook_pages'] = $this->db->get('facebook_pages')->result();
-         */
+        $this->_page_view_counter(1);
+        
+        $content['title'] = 'act.mtvexit.org | Join The Fight';
+        $content['data'] = '';
+        $content['content'] = $this->load->view('default', $content, true);
         $this->load->view('body', $content);
     }
 
     function twitterconnect() {
-        $sesi = $this->session->userdata('idadmin');
-        $name = $this->session->userdata('display');
+        redirect();
+    }
+    
+    function actvideo() {
+        ?>        
+        <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraph.org/schema/">
+            <head>
+                <title>Act.MTV.Exit | Join The Fight</title> 
+                <meta property="og:title" content="Video - Act.MTV.Exit | Join The Fight"/>
+                <meta property="og:site_name" content="act.mtvexit.org"/>
+                <meta property="og:image " content="act.mtvexit.org"/>
+                <meta property="og:description" content="Saya baru saja melihat video dan mendukung #stophumantrafficking. Ikutan aksi nyata http://facebook.com/mtvexitindonesia yuk, klik http://act.mtvexit.org untuk ikutan lihat video dan mendukung aksi lainnya."/>
+                <meta http-equiv="refresh" content="0;url=http://act.mtvexit.org#actVideo">
+            </head>
+            <body></body>
+        </html>
+        <?php
+    }
 
-        if ($sesi == "") {
-            redirect('home/login');
-        }
+    function infografik() {
+        $this->_page_view_counter(1);
+        
+        $content['title'] = 'Infografik | act.mtvexit.org | Join The Fight';
+        $content['data'] = '';
+        $content['content'] = $this->load->view('infografik', $content, true);
+        $this->load->view('body', $content);
+    }
 
-        include(APPPATH . 'third_party/tmhOAuth.php');
-        $tmhOAuth = new tmhOAuth(array(
-                    'consumer_key' => $this->config->item('tweet_consumer_key'),
-                    'consumer_secret' => $this->config->item('tweet_consumer_secret')
-                ));
+    function youthleadertoolkit() {
+        $this->load->helper(array('form'));
+        $this->load->library('form_validation');
+        $this->load->library('session');
+        $view_id = $this->session->userdata('aidi');
 
-        if (isset($_REQUEST['oauth_verifier'])) {
-            /* oauth_verifier */
-            $tmhOAuth->config['user_token'] = $_SESSION['oauth']['oauth_token'];
-            $tmhOAuth->config['user_secret'] = $_SESSION['oauth']['oauth_token_secret'];
+        $content['title'] = 'Youth Leader Toolkit | act.mtvexit.org | Join The Fight';
+        $content['data'] = '';
 
-            $code = $tmhOAuth->request('POST', $tmhOAuth->url('oauth/access_token', ''), array(
-                        'oauth_verifier' => $_REQUEST['oauth_verifier']
-                    ));
+        if (!$view_id) {
+            $this->form_validation->set_rules('tool_name', 'Name', 'trim|required|min_length[6]|max_length[20]|callback__alpha_dash_space');
+            $this->form_validation->set_rules('tool_email', 'Email', 'trim|required|valid_email');
+            if ($this->form_validation->run() === TRUE) {
+                $data['tool_name'] = $this->input->post('tool_name', true);
+                $data['tool_email'] = $this->input->post('tool_email', true);
 
-            if ($code == 200) {
-                /* oauth verifier success */
-                $access_token = $tmhOAuth->extract_params($tmhOAuth->response['response']);
-                if (is_array($access_token) && count($access_token) != '0') {
-                    /* get additional user data */
-                    $tmhOAuth->config['user_token'] = $access_token['oauth_token'];
-                    $tmhOAuth->config['user_secret'] = $access_token['oauth_token_secret'];
+                $this->db->insert('toolkit', $data);
+                $keyword['aidi'] = $this->db->insert_id();
+                $this->session->set_userdata($keyword);
 
-                    $code = $tmhOAuth->request('GET', $tmhOAuth->url('1/account/verify_credentials'));
-                    if ($code == 200) {
-                        /* get data success */
-                        $response = json_decode($tmhOAuth->response['response']);
+                redirect('youthleadertoolkitview');
+            } else {
+                $this->_page_view_counter(1);
 
-                        $data = array(
-                            'account_id' => $sesi,
-                            'twitter_uid' => $response->id,
-                            'twitter_name' => $response->name,
-                            'twitter_username' => $response->screen_name,
-                            'twitter_token' => $access_token['oauth_token'],
-                            'twitter_secret' => $access_token['oauth_token_secret'],
-                            'profile_image_url' => $response->profile_image_url,
-                            'description' => $response->description,
-                            'created_at' => date('Y-m-d h:i:s', strtotime($response->created_at)),
-                            'time_zone' => $response->time_zone,
-                            'lang' => $response->lang,
-                            'verified' => $response->verified,
-                            'protected' => $response->protected
-                        );
-                        $this->db->select('id');
-                        $check_account = $this->db->get_where('twitter', array('twitter_uid' => $response->id))->row();
-                        if (!$check_account) {
-                            $this->db->insert('twitter', $data);
-                        } else {
-                            $this->db->where('id', $check_account->id);
-                            $this->db->update('twitter', $data);
-                        }
-                        redirect('auto/twGetFirstData/' . $response->id);
-                    }
-                }
-                unset($_SESSION['oauth']);
+                $content['content'] = $this->load->view('youthleadertoolkit', $content, true);
             }
         } else {
-            /* twitter connect start */
-            $callback = site_url('home/twitterconnect');
-
-            $params = array('oauth_callback' => $callback);
-            $code = $tmhOAuth->request('POST', $tmhOAuth->url('oauth/request_token', ''), $params);
-            if ($code == 200) {
-                /* token request available */
-                $_SESSION['oauth'] = $tmhOAuth->extract_params($tmhOAuth->response['response']);
-                $url = $tmhOAuth->url('oauth/authorize', '') . "?oauth_token={$_SESSION['oauth']['oauth_token']}&force_login=1";
-                redirect($url);
-            } else {
-                echo $code;
-            }
+            redirect('youthleadertoolkitview');
         }
-        redirect();
+
+        $this->load->view('body', $content);
+    }
+
+    function youthleadertoolkitview() {
+        $this->_page_view_counter(1);
+        
+        $this->load->helper(array('form'));
+        $this->load->library('form_validation');
+        $this->load->library('session');
+        $view_id = $this->session->userdata('aidi');
+
+        if (!$view_id) {
+            redirect('youthleadertoolkit');
+        }
+
+        $content['title'] = 'Youth Leader Toolkit | act.mtvexit.org | Join The Fight';
+        $content['data'] = '';
+        $content['content'] = $this->load->view('youthleadertoolkitview', $content, true);
+        $this->load->view('body', $content);
     }
 
     function gaconnect() {
-        $sesi = $this->session->userdata('idadmin');
-        $name = $this->session->userdata('display');
-
-        if ($sesi == "") {
-            redirect('home/login');
-        }
-
         require APPPATH . 'third_party/google-api-php-client/src/apiClient.php';
         require APPPATH . 'third_party/google-api-php-client/src/contrib/apiOauth2Service.php';
 
@@ -187,4 +168,25 @@ class Home extends CI_Controller {
         }
     }
 
+    function _alpha_dash_space($str_in = '') {
+        if (!preg_match("/^([-a-z0-9_ ])+$/i", $str_in)) {
+            $this->form_validation->set_message('_alpha_dash_space', 'The %s field may only contain alpha-numeric characters, spaces, underscores, and dashes.');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
+    function _page_view_counter($id) {
+        $q = $this->db->query("UPDATE act_counter SET data_values = data_values + 1 WHERE id = '".$id."'");
+    }
+
+    function jobdone() {
+        $id = $this->uri->segment(3,0);
+        if(is_numeric($id) && $id != 0 ) {
+            $this->_page_view_counter($id);
+        }
+    }
+
+    
 }
