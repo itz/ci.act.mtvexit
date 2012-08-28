@@ -49,5 +49,5 @@
     <br /><br />
     <a href="https://twitter.com/share" class="twitter-share-button" data-url="<?php echo site_url('#actVideo'); ?>" data-text="Saya baru saja melihat video dan mendukung #stophumantrafficking. Ikutan aksi nyata @MTVEXITID yuk, klik http://act.mtvexit.org untuk ikutan" data-size="large" data-related="MTVEXITID" data-count="none" data-dnt="true">Tweet</a>
     &nbsp;&nbsp;&nbsp;
-    <div class="fb-like" data-href="<?php echo site_url('actvideo'); ?>" data-send="false" data-width="450" data-show-faces="true"></div>
+    <div class="fb-like" data-href="<?php echo site_url('actvideo'); ?>" data-send="false" data-width="450" data-show-faces="false"></div>
 

@@ -10,4 +10,4 @@
     <br /><br />
     <a href="https://twitter.com/share" class="twitter-share-button" data-url="<?php echo site_url('#infoGrafik'); ?>" data-text="Dukung #stophumantrafficking dan ikut aksinya bersama @MTVEXITID klik http://act.mtvexit.org" data-size="large" data-related="MTVEXITID" data-count="none" data-dnt="true">Tweet</a>
     &nbsp;&nbsp;&nbsp;
-    <div class="fb-like" data-href="<?php echo current_url();?>" data-send="false" data-width="450" data-show-faces="true"></div>
+    <div class="fb-like" data-href="<?php echo current_url();?>" data-send="false" data-width="450" data-show-faces="false"></div>

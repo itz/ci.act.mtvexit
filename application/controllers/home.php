@@ -26,19 +26,11 @@ class Home extends CI_Controller {
     }
     
     function actvideo() {
-        ?>        
-        <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraph.org/schema/">
-            <head>
-                <title>Act.MTV.Exit | Join The Fight</title> 
-                <meta property="og:title" content="Video - Act.MTV.Exit | Join The Fight"/>
-                <meta property="og:site_name" content="act.mtvexit.org"/>
-                <meta property="og:image " content="act.mtvexit.org"/>
-                <meta property="og:description" content="Saya baru saja melihat video dan mendukung #stophumantrafficking. Ikutan aksi nyata http://facebook.com/mtvexitindonesia yuk, klik http://act.mtvexit.org untuk ikutan lihat video dan mendukung aksi lainnya."/>
-                <meta http-equiv="refresh" content="0;url=http://act.mtvexit.org#actVideo">
-            </head>
-            <body></body>
-        </html>
-        <?php
+        
+        $content['title'] = 'Video - Act.MTV.Exit | Join The Fight';
+        $content['data'] = '';
+        $content['content'] = $this->load->view('video', $content, true);
+        $this->load->view('body', $content);
     }
 
     function infografik() {
