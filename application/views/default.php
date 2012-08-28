@@ -1,4 +1,4 @@
-<script type="text/javascript" src="http://a.vimeocdn.com/js/froogaloop2.min.js""></script>
+<script type="text/javascript" src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
 <script type="text/javascript" >
     $(document).ready(function() {
         $('iframe.vimeo').each(function(){
@@ -17,11 +17,18 @@
                 url: '<?php echo site_url('home/jobdone/4'); ?>'
             });
         });
-
+        $('#goToWalkFree').click(function(){
+            $.ajax({
+                url: '<?php echo site_url('home/jobdone/6'); ?>'
+            });
+        });
     });
 </script>    
 </head>
 <body>
+    <h2>Counter</h2>
+    <?php echo $data; ?>
+    
     <h2 id="tweetFight">Tweet Fight</h2>
     Join Tweet Fight! Ikut yuk memerangi perdagangan orang melalui twitter. Tweet dukungan kamu dengan mention @MTVEXITID + #stophumantrafficking
     <br /><br />
@@ -30,7 +37,7 @@
     <h2 id="infoGrafik">Infografik</h2>
     Pedagangan orang ada disekitar kita lho. Simak infographic seputar perdagangan orang di Indonesia. Jangan lupa share ke teman-teman terdekatmu via Facebook & Twitter ya
     <br /><br />
-    <a href="<?php echo site_url('infografik'); ?>"><img src="<?php echo base_url().'assets/images/infographics.jpg';?>" /></a>
+    <a href="<?php echo site_url('infografik'); ?>"><img src="<?php echo base_url() . 'assets/images/infographics.jpg'; ?>" /></a>
 
     <h2>The Fight Day</h2>
     Gabung bersama kami di Join The Fight Day. Hari Minggu 2 September 2012 jam 7-9 pagi.
@@ -51,3 +58,7 @@
     &nbsp;&nbsp;&nbsp;
     <div class="fb-like" data-href="<?php echo site_url('actvideo'); ?>" data-send="false" data-width="450" data-show-faces="false"></div>
 
+    <h2>Walk Free</h2>
+    Klik <a id="goToWalkFree" href="http://www.walkfree.org">www.walkfree.org</a> dan ikutan gerakan untuk mengakhiri perbudakan modern. 
+    <br /><br />
+    

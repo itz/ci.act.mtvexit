@@ -3,7 +3,7 @@
 # Server version:               5.5.16
 # Server OS:                    Win32
 # HeidiSQL version:             6.0.0.3603
-# Date/time:                    2012-08-28 16:21:30
+# Date/time:                    2012-08-28 21:50:06
 # --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -20,15 +20,15 @@ CREATE TABLE IF NOT EXISTS `act_counter` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
-# Dumping data for table mtvexit.act_counter: 1 rows
+# Dumping data for table mtvexit.act_counter: 6 rows
 /*!40000 ALTER TABLE `act_counter` DISABLE KEYS */;
 INSERT INTO `act_counter` (`id`, `section`, `data_values`, `date_update`) VALUES
-	(1, 'pageview', 29, '2012-08-28 16:01:26'),
+	(1, 'pageview', 30, '2012-08-28 21:49:28'),
 	(2, 'video', 1, '2012-08-28 15:15:20'),
 	(3, 'downloadToolKit', 1, '2012-08-28 15:24:47'),
 	(4, 'goToFBEvents', 0, '2012-08-28 15:25:45'),
 	(5, 'tweeting', 1, '2012-08-28 15:42:13'),
-	(6, 'fbLikes', 0, '2012-08-28 16:18:11');
+	(6, 'walkFree', 0, '2012-08-28 21:49:53');
 /*!40000 ALTER TABLE `act_counter` ENABLE KEYS */;
 
 

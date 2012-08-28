@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -10,13 +11,21 @@ class Home extends CI_Controller {
         parent::__construct();
         $this->load->helper('url');
         $this->load->database();
+
+        include(APPPATH . 'third_party/tmhOAuth.php');
+        $this->tmhOAuth = new tmhOAuth(array(
+                    'consumer_key' => $this->config->item('tweet_consumer_key'),
+                    'consumer_secret' => $this->config->item('tweet_consumer_secret')
+                ));
     }
 
     function index() {
         $this->_page_view_counter(1);
-        
+
+        $count = $this->db->query('SELECT SUM(data_values) AS jumlah FROM act_counter')->row();
+
         $content['title'] = 'act.mtvexit.org | Join The Fight';
-        $content['data'] = '';
+        $content['data'] = $count->jumlah;
         $content['content'] = $this->load->view('default', $content, true);
         $this->load->view('body', $content);
     }
@@ -24,18 +33,29 @@ class Home extends CI_Controller {
     function twitterconnect() {
         redirect();
     }
-    
+
+    function acttweet() {
+        $content['title'] = 'Tweet - Act.MTV.Exit | Join The Fight';
+        $content['content'] = $this->load->view('tweet', $content, true);
+        $this->load->view('body', $content);
+    }
+
+    function gettweet() {
+        $this->tmhOAuth->config['user_token'] = $this->config->item('tweet_token_key');
+        $this->tmhOAuth->config['user_secret'] = $this->config->item('tweet_token_secret');
+
+        $this->__twGetHash();
+    }
+
     function actvideo() {
-        
         $content['title'] = 'Video - Act.MTV.Exit | Join The Fight';
-        $content['data'] = '';
         $content['content'] = $this->load->view('video', $content, true);
         $this->load->view('body', $content);
     }
 
     function infografik() {
         $this->_page_view_counter(1);
-        
+
         $content['title'] = 'Infografik | act.mtvexit.org | Join The Fight';
         $content['data'] = '';
         $content['content'] = $this->load->view('infografik', $content, true);
@@ -77,7 +97,7 @@ class Home extends CI_Controller {
 
     function youthleadertoolkitview() {
         $this->_page_view_counter(1);
-        
+
         $this->load->helper(array('form'));
         $this->load->library('form_validation');
         $this->load->library('session');
@@ -93,73 +113,6 @@ class Home extends CI_Controller {
         $this->load->view('body', $content);
     }
 
-    function gaconnect() {
-        require APPPATH . 'third_party/google-api-php-client/src/apiClient.php';
-        require APPPATH . 'third_party/google-api-php-client/src/contrib/apiOauth2Service.php';
-
-        $cache_path = $this->config->item('cache_path');
-        $GLOBALS['apiConfig']['ioFileCache_directory'] = ($cache_path == '') ? APPPATH . 'cache/' : $cache_path;
-
-        $googleauth = new apiClient();
-        $googleauth->setApplicationName($this->config->item('application_name', 'analytics'));
-        $googleauth->setClientId($this->config->item('client_id', 'analytics'));
-        $googleauth->setClientSecret($this->config->item('client_secret', 'analytics'));
-        $googleauth->setRedirectUri($this->config->item('redirect_uri', 'analytics'));
-        $googleauth->setDeveloperKey($this->config->item('api_key', 'analytics'));
-        $googleauth->setAccessType($this->config->item('access_type', 'analytics'));
-        $googleauth->setScopes($this->config->item('scopes', 'analytics'));
-
-        $userdata = new apiOauth2Service($googleauth);
-
-        if (isset($_GET['code'])) {
-            $googleauth->authenticate();
-            $token = $googleauth->getAccessToken();
-            $token_data = json_decode($token, true);
-            $user = $userdata->userinfo->get();
-            if ($token_data && $user) {
-                $db['name'] = $user['name'];
-                $db['username'] = $user['email'];
-                $db['acc_token'] = $token;
-                $db['acc_access_token'] = $token_data['access_token'];
-                $db['acc_token_type'] = $token_data['token_type'];
-                $db['acc_expires_in'] = $token_data['expires_in'];
-                $db['acc_id_token'] = $token_data['id_token'];
-                $db['acc_refresh_token'] = $token_data['refresh_token'];
-                $db['acc_created'] = $token_data['created'];
-                $db['acc_id'] = $user['id'];
-                $db['acc_verified_email'] = $user['verified_email'];
-
-                if (isset($user['link']) && $user['link'] != '')
-                    $db['acc_link'] = $user['link'];
-                if (isset($user['picture']) && $user['picture'] != '')
-                    $db['acc_picture'] = $user['picture'];
-                if (isset($user['gender']) && $user['gender'] != '')
-                    $db['acc_gender'] = $user['gender'];
-                if (isset($user['locale']) && $user['locale'] != '')
-                    $db['acc_locale'] = $user['locale'];
-
-                $db['postdate'] = date('Y-m-d H:i:s');
-
-                $this->db->select('id');
-                $check_account = $this->db->get_where('ga_account', array('username' => $db['username']))->row();
-                if (!$check_account) {
-                    $this->db->insert('ga_account', $db);
-                    $id = $this->db->insert_id();
-                } else {
-                    $this->db->where('id', $check_account->id);
-                    $this->db->update('ga_account', $db);
-                    $id = $check_account->id;
-                }
-                redirect('ganalytics/manage/' . $id);
-            } else {
-                redirect();
-            }
-        } else {
-            $authUrl = $googleauth->createAuthUrl();
-            redirect($authUrl);
-        }
-    }
-
     function _alpha_dash_space($str_in = '') {
         if (!preg_match("/^([-a-z0-9_ ])+$/i", $str_in)) {
             $this->form_validation->set_message('_alpha_dash_space', 'The %s field may only contain alpha-numeric characters, spaces, underscores, and dashes.');
@@ -169,16 +122,90 @@ class Home extends CI_Controller {
         }
     }
 
+    function _text_formatter($source) {
+        $source = strip_tags(stripslashes($source));
+        $source = preg_replace('/<(.*?)>/ie', "'<'.stripslashes('\\1').'>'", $source);
+        return $source;
+    }
+
     function _page_view_counter($id) {
-        $q = $this->db->query("UPDATE act_counter SET data_values = data_values + 1 WHERE id = '".$id."'");
+        $q = $this->db->query("UPDATE act_counter SET data_values = data_values + 1 WHERE id = '" . $id . "'");
     }
 
     function jobdone() {
-        $id = $this->uri->segment(3,0);
-        if(is_numeric($id) && $id != 0 ) {
+        $id = $this->uri->segment(3, 0);
+        if (is_numeric($id) && $id != 0) {
             $this->_page_view_counter($id);
         }
     }
 
-    
+    function __twGetHash($max = false) {
+        $params = array(
+            'include_entities' => true,
+            'show_user' => true,
+            'q' => '#stophumantrafficking',
+            'result_type' => 'recent',
+            'rpp' => 10
+        );
+        if ($max) {
+            $params['max_id'] = $max;
+        }
+        $code = $this->tmhOAuth->request('GET', 'http://search.twitter.com/search.json', $params);
+        $response = json_decode($this->tmhOAuth->response['response'], true);
+        if ($code == 200) {
+            $count = count($response);
+            if ($count != 0) {
+                $max_id = $this->__twProcessHash($response['results']);
+                if ($max_id != 0) {
+                    usleep(50000);
+                    $jumlah = $this->__twGetHash($max_id);
+                }
+            }
+        } else {
+            error_log('twitter get hashtag ' . json_encode($response));
+        }
+    }
+
+    function __twProcessHash($data) {
+        $x = 0;
+        $y = count($data);
+        foreach ($data as $tweet) {
+            $max_id = $tweet['id_str'];
+            $tweet_data = array(
+                'tweet_id' => $tweet['id_str'],
+                'from_id' => $tweet['from_user_id_str'],
+                'from_name' => $tweet['from_user'],
+                'text' => $tweet['text'],
+                'created_at' => date('Y-m-d H:i:s', strtotime($tweet['created_at'])),
+                'source' => $this->_text_formatter(strip_tags(html_entity_decode($tweet['source'])))
+            );
+            if (isset($tweet['entities'])) {
+                if (isset($tweet['entities']['media']) && isset($tweet['entities']['media'][0]['media_url']) && $tweet['entities']['media'][0]['media_url'] != '') {
+                    $tweet_data['ent_media'] = $tweet['entities']['media'][0]['media_url'];
+                }
+                if (isset($tweet['entities']['urls']) && isset($tweet['entities']['urls'][0]['expanded_url']) && $tweet['entities']['urls'][0]['expanded_url'] != '') {
+                    $tweet_data['ent_urls'] = $tweet['entities']['urls'][0]['expanded_url'];
+                }
+            }
+#            $this->_xd($tweet_data);
+            $check_data = $this->db->get_where('tweet', array('tweet_id' => $tweet_data['tweet_id']))->row();
+            if ($check_data) {
+                $x++;
+            } else {
+                $this->db->insert('tweet', $tweet_data);
+            }
+        }
+        if ($x == $y) {
+            $max_id = 0;
+        }
+        return $max_id;
+    }
+
+    function _xd($data) {
+        echo '<pre>';
+        print_r($data);
+        echo '<pre>';
+        #die();
+    }
+
 }
