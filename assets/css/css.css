@@ -1,0 +1,138 @@
+/**
+*MTV Exit
+ @author      Zoeldt <zoel@think.web.com>
+ @version     1.0
+ @copyright   Copyright (c) 2012,Think Web
+ 
+ BebasNeueRegular
+ TitilliumText22LThin
+ TitilliumText22LLight
+ TitilliumText22LRegular
+ TitilliumText22LMedium
+ TitilliumText22LBold
+ TitilliumText22LXBold
+**/
+
+/*reset*/
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,pre,em,img,strong,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;font:inherit;vertical-align:baseline}
+body{line-height:1}
+ol,ul{list-style:none}
+table{border-collapse:collapse;border-spacing:0}
+strong{font-weight:bold}
+/*clearfix*/
+.clearfix:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0}
+.clearfix{display:block}
+html[xmlns] .clearfix{display:block}
+* html .clearfix{height:1%}
+
+/*text rule*/
+body{font:13px TitilliumText22LLight, Arial,Helvetica,sans-serif;line-height:normal;color:#fff;background:#43569b url(../img/bg.png) repeat-y center 0}
+a{color:#d62c5b;text-decoration:none;outline:none}
+a:hover{color:#f85096}
+a:focus{}
+hr{border:0 #ccc solid;border-top-width:1px;clear:both;height:1;margin-bottom:15px}
+p,dl,hr,h1,h2,h3,h4,h5,h6,ol,ul,pre,table,address,fieldset{margin-bottom:0px}
+h1,h2,h3,h4,h5{font-weight:bold}
+h1{font-size:23px}
+h2{font-size:24px}
+h3{font-size:17px}
+h4{font-size:16px}
+h5{font-size:13px}
+h6{font-size:14px}
+
+/*general*/
+#container{width:900px;margin:0 auto;background:transparent url(../img/main-bg.png) repeat 0 0;position:relative;box-shadow:0 0 38px rgba(0,0,0,0.75)-webkit-box-shadow:0 0 38px rgba(0,0,0,0.75);-moz-box-shadow:0 0 38px rgba(0,0,0,0.75)}
+#main{position:relative;z-index:1;background:url(../img/bottom.png) repeat-x 0 100%;padding:29px}
+
+
+/*home*/
+#counter {font-family:BebasNeueRegular;font-size:80px;width:200px;background:#e82e8a;margin:0 auto 5px;overflow:hidden;position:relative;text-align:center;height:85px;}
+#counter i{position:absolute;background:url(../img/pink-glossy.png) repeat-x 0 0;display:block;height:41px;position:absolute;width:100%}
+#counter b{line-height:70px}
+#counter-text{width:460px;margin:auto;text-align:center;text-transform:uppercase;font-size:12px}
+#main-content{margin:35px 0 0;padding:0 0 10px;position:relative}
+#main-content h2{font-family:TitilliumText22LRegular;font-size:35px;text-transform:uppercase;margin:0 0 30px;text-align:center}
+#see-tweet{position:absolute;right:0;top:0}
+#see-tweet a{width:230px;height:139px;display:block;text-indent:-999em;}
+#see-tweet a:hover{background:url(../img/white.png) repeat 0 0}
+#act5 .share{left:652px;top:10px}
+
+/*box*/
+.box{text-transform:uppercase;padding:0 0 21px;background:transparent url(../img/banner/btm.png) no-repeat center 100%;width:842px;margin:auto;position:relative}
+#main .box h2{font-family:TitilliumText22LRegular;font-size:16px;background:#3b4b88;padding:10px 12px 10px 42px;line-height:17px;text-align:left;margin:0}
+.box strong{font-family:TitilliumText22LBold}
+.box a:hover{opacity:0.9}
+.box .act-title{line-height:36px;font-size:28px;color:#fff}
+.act-numb{ background:url(../img/cyrcle.png) no-repeat 0 0;width:67px;height:68px;display:block;position:absolute;top:-5px;left:-33px;line-height:15px;font-size:16px;font-family:TitilliumText22LBold;text-align:center;padding:18px 0 0;z-index:99}
+
+.banner-wrap{position:relative}
+.banner{vertical-align:text-bottom;background:#373c50}
+.content{position:absolute}
+#tweet-btn{top:90px;left:240px}
+.content.share{bottom:5px;left:10px}
+#vid{background:#000}
+#vid #the-vid{width:640px}
+
+/*header*/
+#header{padding:7px 30px 0;z-index:2;position:relative;display:block;position:relative;height:180px}
+#logo{position:absolute;top:20px;left:30px}
+#donors{position:absolute;right:30px;top:95px}
+#donors li{display:inline-block;margin:0 13px}
+#back{}
+#back a{ font-family:TitilliumText22LRegular;color:#fff;font-size:25px;text-decoration:underline}
+
+/*detail*/
+#infograph li{text-align:center;position:relative;margin:0 0 10px;font-family:TitilliumText22LRegular;font-size:30px;text-transform:uppercase}
+#infograph img{width:840px;vertical-align:top}
+
+#download{ background:#ddd;padding:30px;width:225px;margin:0 auto;box-shadow:0 0 20px rgba(0,0,0,0.3);-moz-box-shadow:0 0 20px rgba(0,0,0,0.3);-webit-box-shadow:0 0 20px rgba(0,0,0,0.3)}
+#download p{}
+#download input.text{ background:#fff;
+	border:1px solid #fff;
+-moz-transition:border linear 0.2s,box-shadow linear 0.2s;
+-webkit-transition:border linear 0.2s,box-shadow linear 0.2s;
+-ms-transition:border linear 0.2s,box-shadow linear 0.2s;
+-o-transition:border linear 0.2s,box-shadow linear 0.2s;
+transition:border linear 0.2s,box-shadow linear 0.2s;
+-webkit-box-shadow:inset 0 1px 3px rgba(0,0,0,0.1);
+-moz-box-shadow:inset 0 1px 3px rgba(0,0,0,0.1);
+box-shadow:inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#download input.text:focus{
+	border-color:#f7e518;
+	-webkit-box-shadow:inset 0 1px 3px rgba(0,0,0,0.1),0 0 12px rgba(247,229,24,0.8);
+	-moz-box-shadow:inset 0 1px 3px rgba(0,0,0,0.1),0 0 12px rgba(247,229,24,0.8);
+	box-shadow:inset 0 1px 3px rgba(0,0,0,0.1),0 0 12px rgba(247,229,24,0.8);
+}
+#download input.text, #download input#submit{-moz-border-radius:3px;-webit-border-radius:3px;border-radius:3px;border:none} 
+#download input.text{padding:10px;font-size:20px;margin:0 0 5px;width:203px}
+#download input#submit{ background:#e82e8a;color:#fff;border:none;font-size:25px;padding:5px 15px;width:223px}
+#download input#submit:hover{cursor:pointer}
+#download-this{text-align:center;margin:0 0 40px}
+#download-this a{display:block;background: url(../img/white.png) repeat 0 0;font-size:30px;color:#fff}
+#download-this a:hover{background:#e82e8a;color:#fff}
+
+#tweet-list{}
+#tweet-list ul{}
+#tweet-list li{font-size:15px;padding:0 0 13px;margin:0 0 13px;border-bottom:1px solid #5e75c9}
+#tweet-list a{color:#4bc2f1}
+#tweet-list a:hover{color:#fff}
+.tweet{font-size:18px;margin:0 0 5px}
+#tweet-list .tweet a{background:#ec549f;color:#fff}
+
+/*footer*/
+.footer{background:transparent url(../img/footer.jpg) repeat 0 0;height:100px;position:relative;display:block;padding:20px 35px 0 0;position:relative;text-align:center}
+.footer ul{text-align:center;margin:7px 0 0}
+.footer li {display:inline-block;margin:0}
+.footer li a{background:url(../img/socmed.png) no-repeat 0 0;height:38px;width:35px;display:block;text-indent:-999em}
+#fb a{background-position: 0 0}
+#fb a:hover{background-position: 0 100%}
+#tw a{background-position: 100% 0}
+#tw a:hover{background-position: 100% 100%}
+
+.center{text-align:center}
+.yellow{color:#fcf40b}
+
+/*fb share*/
+.fb_edge_widget_with_comment{position:relative;top:-4px}

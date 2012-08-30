@@ -21,11 +21,10 @@ class Home extends CI_Controller {
 
     function index() {
         $this->_page_view_counter(1);
-
         $count = $this->db->query('SELECT SUM(data_values) AS jumlah FROM act_counter')->row();
-
-        $content['title'] = 'act.mtvexit.org | Join The Fight';
         $content['data'] = $count->jumlah;
+
+        $content['title'] = '';
         $content['content'] = $this->load->view('default', $content, true);
         $this->load->view('body', $content);
     }
@@ -35,7 +34,12 @@ class Home extends CI_Controller {
     }
 
     function acttweet() {
-        $content['title'] = 'Tweet - Act.MTV.Exit | Join The Fight';
+        $this->_page_view_counter(1);
+
+        $data = $this->db->query('SELECT * FROM act_tweet ORDER BY created_at DESC LIMIT 20')->result();
+
+        $content['title'] = 'List of Tweets &mdash;';
+        $content['data'] = $data;
         $content['content'] = $this->load->view('tweet', $content, true);
         $this->load->view('body', $content);
     }
@@ -48,16 +52,27 @@ class Home extends CI_Controller {
     }
 
     function actvideo() {
-        $content['title'] = 'Video - Act.MTV.Exit | Join The Fight';
+        $this->_page_view_counter(1);
+        $count = $this->db->query('SELECT SUM(data_values) AS jumlah FROM act_counter')->row();
+        $content['data'] = $count->jumlah;
+        $content['title'] = 'Safe Migration Video &mdash;';
         $content['content'] = $this->load->view('video', $content, true);
+        $this->load->view('body', $content);
+    }
+
+    function actevent() {
+        $this->_page_view_counter(1);
+        $count = $this->db->query('SELECT SUM(data_values) AS jumlah FROM act_counter')->row();
+        $content['data'] = $count->jumlah;
+        $content['title'] = '#JoinTheFightDay &mdash;';
+        $content['content'] = $this->load->view('event', $content, true);
         $this->load->view('body', $content);
     }
 
     function infografik() {
         $this->_page_view_counter(1);
 
-        $content['title'] = 'Infografik | act.mtvexit.org | Join The Fight';
-        $content['data'] = '';
+        $content['title'] = 'Infographic &mdash;';
         $content['content'] = $this->load->view('infografik', $content, true);
         $this->load->view('body', $content);
     }
@@ -68,8 +83,7 @@ class Home extends CI_Controller {
         $this->load->library('session');
         $view_id = $this->session->userdata('aidi');
 
-        $content['title'] = 'Youth Leader Toolkit | act.mtvexit.org | Join The Fight';
-        $content['data'] = '';
+        $content['title'] = 'Youth Leader Toolkit &mdash;';
 
         if (!$view_id) {
             $this->form_validation->set_rules('tool_name', 'Name', 'trim|required|min_length[6]|max_length[20]|callback__alpha_dash_space');
@@ -82,14 +96,14 @@ class Home extends CI_Controller {
                 $keyword['aidi'] = $this->db->insert_id();
                 $this->session->set_userdata($keyword);
 
-                redirect('youthleadertoolkitview');
+                redirect('act4s');
             } else {
                 $this->_page_view_counter(1);
 
                 $content['content'] = $this->load->view('youthleadertoolkit', $content, true);
             }
         } else {
-            redirect('youthleadertoolkitview');
+            redirect('act4s');
         }
 
         $this->load->view('body', $content);
@@ -104,11 +118,10 @@ class Home extends CI_Controller {
         $view_id = $this->session->userdata('aidi');
 
         if (!$view_id) {
-            redirect('youthleadertoolkit');
+            redirect('act4');
         }
 
-        $content['title'] = 'Youth Leader Toolkit | act.mtvexit.org | Join The Fight';
-        $content['data'] = '';
+        $content['title'] = 'Youth Leader Toolkit &mdash;';
         $content['content'] = $this->load->view('youthleadertoolkitview', $content, true);
         $this->load->view('body', $content);
     }
@@ -199,13 +212,6 @@ class Home extends CI_Controller {
             $max_id = 0;
         }
         return $max_id;
-    }
-
-    function _xd($data) {
-        echo '<pre>';
-        print_r($data);
-        echo '<pre>';
-        #die();
     }
 
 }

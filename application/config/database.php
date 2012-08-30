@@ -49,9 +49,9 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = '';
-$db['default']['database'] = 'mtvexit';
+$db['default']['username'] = 'mtvexit_thinkweb';
+$db['default']['password'] = 'Th1nkW3b';
+$db['default']['database'] = 'mtvexit_action';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = 'act_';
 $db['default']['pconnect'] = TRUE;

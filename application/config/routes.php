@@ -39,10 +39,12 @@
 */
 
 $route['default_controller'] = "home";
-$route['actvideo'] = "home/actvideo";
-$route['infografik'] = "home/infografik";
-$route['youthleadertoolkit'] = "home/youthleadertoolkit";
-$route['youthleadertoolkitview'] = "home/youthleadertoolkitview";
+$route['act1'] = "home/acttweet";
+$route['act2'] = "home/infografik";
+$route['act3'] = "home/actevent";
+$route['act4'] = "home/youthleadertoolkit";
+$route['act4s'] = "home/youthleadertoolkitview";
+$route['act5'] = "home/actvideo";
 $route['404_override'] = '';
 
 
