@@ -117,7 +117,7 @@
                 <div class="box" id="act6">
                     <b class="act-numb">Action #6</b>
                     <div class="banner-wrap">
-                        <a id="goToWalkFree" href="http://walkfree.org/id" target="_blank"><img src="<?php echo base_url(); ?>assets/img/banner/act6.jpg" width="842" height="139" alt=" " class="banner"/></a>
+                        <a id="goToWalkFree" href="http://www.walkfree.org/id/actions/commit" target="_blank"><img src="<?php echo base_url(); ?>assets/img/banner/act6.jpg" width="842" height="139" alt=" " class="banner"/></a>
                     </div>
                 </div>
 
